@@ -22,6 +22,9 @@ RUN set -ex && \
 WORKDIR /src
 COPY . .
 
+RUN chmod 764  ./contrib/depends/config.guess
+RUN chmod 764  ./contrib/depends//config.sub
+
 ARG NPROC
 RUN set -ex && \
     git submodule init && git submodule update && \
