@@ -46,9 +46,10 @@ COPY --from=builder /src/build/x86_64-linux-gnu/release/bin /usr/local/bin/
 
 # Create apepepow user
 RUN adduser --system --group --disabled-password apepepow && \
-	mkdir -p /wallet /home/apepepow/.bitapepepow && \
+	mkdir -p /wallet /data/ /home/apepepow/.bitapepepow && \
 	chown -R apepepow:apepepow /home/apepepow/.bitapepepow && \
-	chown -R apepepow:apepepow /wallet
+	chown -R apepepow:apepepow /wallet && \
+	chown -R apepepow:apepepow /data
 
 # Contains the blockchain
 VOLUME /home/apepepow/.bitapepepow
@@ -57,13 +58,14 @@ VOLUME /home/apepepow/.bitapepepow
 # cd /wallet
 # apepepow-wallet-cli
 VOLUME /wallet
+VOLUME /data
 
-EXPOSE 18080
-EXPOSE 18081
+EXPOSE 6363
+EXPOSE 6464
 
 # switch to user apepepow
 USER apepepow
 
 ENTRYPOINT ["apepepowd"]
-CMD ["--p2p-bind-ip=0.0.0.0", "--p2p-bind-port=18080", "--rpc-bind-ip=0.0.0.0", "--rpc-bind-port=18081", "--non-interactive", "--confirm-external-bind"]
+CMD [ "--non-interactive", "--confirm-external-bind"]
 
